@@ -88,11 +88,11 @@ def seed_accounts():
         conn.executemany(
             "INSERT INTO accounts (account_id, name, currency, balance, status) VALUES (?, ?, ?, ?, ?)",
             [
-                ("260970000000", "Mercy Uzumaki", "ZMW", 5000.0, "active"),
-                ("260970000001", "Faith Nara", "ZMW", 1200.0, "active"),
-                ("260970000002", "Selina Uchiha", "ZMW", 0.0, "active"),
-                ("260970000003", "Peace Yagami", "ZMW", 10000.0, "active"),
-                ("260970000004", "John Aizen", "ZMW", 0.0, "blocked"),
+                ("260970000000", "Mercy Uzumaki", "XTS", 10000.0, "active"),
+                ("260970000001", "Faith Nara", "XTS", 1200.0, "active"),
+                ("260970000002", "Selina Uchiha", "XTS", 0.0, "active"),
+                ("260970000003", "Peace Yagami", "XTS", 10000.0, "active"),
+                ("260970000004", "John Aizen", "XTS", 0.0, "blocked"),
             ],
         )
         conn.commit()
