@@ -40,7 +40,7 @@ Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
-  "reserve_id": "0586afca-2347-4b58-8aa9-6f2f44c5f10b"
+  "reserve_id": "520fc3d5-f405-41ff-96e1-032223a80774"
 }
 
 ### 7. Unreserve (payee side)

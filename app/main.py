@@ -87,6 +87,7 @@ class ReserveRequest(BaseModel):
     account_id: str
     amount: float
     currency: str
+    transfer_id: str
 
 
 class CommitRequest(BaseModel):
@@ -219,22 +220,25 @@ def reserve_funds(req: ReserveRequest, _auth: None = Depends(verify_token)):
         conn.close()
         raise HTTPException(status_code=422, detail="Account is not active")
 
-    reserve_id = str(uuid.uuid4())
+    existing = conn.execute(
+        "SELECT * FROM reservations WHERE reserve_id = ?", (req.transfer_id,)
+    ).fetchone()
+    if existing is not None:
+        conn.close()
+        raise HTTPException(status_code=409, detail="transfer_id already used for a reservation")
 
     conn.execute(
         "INSERT INTO reservations (reserve_id, account_id, amount, status) VALUES (?, ?, ?, 'RESERVED')",
-        (reserve_id, req.account_id, req.amount),
+        (req.transfer_id, req.account_id, req.amount),
     )
-    # balance_after == current balance, unchanged — this entry is purely a
-    # marker that something is pending, not a real movement of money yet.
     record_gl_entry(
         conn, req.account_id, "PENDING", req.amount, account["balance"],
-        "RESERVE", reserve_id, f"Incoming transfer {reserve_id} reserved — not yet credited",
+        "RESERVE", req.transfer_id, f"Incoming transfer {req.transfer_id} reserved — not yet credited",
     )
     conn.commit()
     conn.close()
 
-    return envelope({"reserveId": reserve_id, "status": "RESERVED"})
+    return envelope({"reserveId": req.transfer_id, "status": "RESERVED"})
 
 
 @app.post("/funds/commit")
