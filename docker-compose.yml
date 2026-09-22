@@ -1,7 +1,7 @@
 name: bluebank
 services:
   bluebank-mock:
-    image: thewababa/bluebank:latest
+    image: thewababa/mockdfsp:latest
     ports:
       - "4040:4040"
     env_file:
