@@ -46,9 +46,31 @@ from fastapi.responses import JSONResponse  # noqa: E402
 from pydantic import BaseModel  # noqa: E402
 
 from app.auth import verify_token  # noqa: E402
-from app.db import get_connection, init_db, record_gl_entry, seed_accounts  # noqa: E402
+from app.db import get_connection, init_db, load_bank_metadata, record_gl_entry, seed_accounts  # noqa: E402
 
-app = FastAPI(title="Blue Bank Mock DFSP")
+
+init_db()
+seed_accounts()
+
+BANK_METADATA = load_bank_metadata()
+
+app = FastAPI(title=f"{BANK_METADATA['bank_name']} Mock DFSP".title())
+@app.get("/")
+def read_root():
+    return envelope({
+        "service": "bank-mock",
+        "bank_name": BANK_METADATA["bank_name"],
+        "fsp_id": BANK_METADATA["fsp_id"],
+    })
+
+
+@app.get("/health")
+def health():
+    return envelope({
+        "status": "ok",
+        "bank_name": BANK_METADATA["bank_name"],
+        "fsp_id": BANK_METADATA["fsp_id"],
+    })
 
 # MODE controls whether /simulate/* endpoints actually call the real core
 # connector, or just return a canned response shaped like the real thing.
@@ -476,7 +498,7 @@ async def simulate_send_money(req: SimulateSendMoneyRequest, _auth: None = Depen
             "idValue": req.payee_id,
             "fspId": "airtelzambia",
             "fspLEI": "984500BA13DAVB8B6C61",
-            "name": "Niza",
+            "name": "Sasuke Uchiha",
         },
         "sendAmount": payload["sendAmount"],
         "sendCurrency": req.send_currency,

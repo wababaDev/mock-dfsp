@@ -3,7 +3,7 @@
 ### === Setup / lookups ===
 
 ### Get account info (active account)
-GET http://localhost:4040/accounts/260970000009
+GET http://localhost:4040/accounts/255700000001
 Authorization: Bearer {{token}}
 
 ### Get balance

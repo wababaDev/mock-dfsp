@@ -1,0 +1,11 @@
+{
+  "bank_name": "redbank",
+  "fsp_id": "redbank",
+  "accounts": [
+    {"account_id": "265990000001", "name": "redbank payee", "currency": "XTS", "balance": 10000.0, "status": "active"},
+    {"account_id": "265990000002", "name": "Sasha Trainer", "currency": "XTS", "balance": 3000.0, "status": "active"},
+    {"account_id": "265990000003", "name": "Edward Elric", "currency": "XTS", "balance": 1200.0, "status": "active"},
+    {"account_id": "265990000004", "name": "Winry Rockbell", "currency": "XTS", "balance": 0.0, "status": "active"},
+    {"account_id": "265990000005", "name": "Roy Mustang", "currency": "XTS", "balance": 0.0, "status": "blocked"}
+  ]
+}

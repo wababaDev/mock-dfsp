@@ -1,0 +1,11 @@
+{
+  "bank_name": "bluebank",
+  "fsp_id": "bluebank",
+  "accounts": [
+    {"account_id": "260970000000", "name": "Mercy Uzumaki", "currency": "XTS", "balance": 10000.0, "status": "active"},
+    {"account_id": "260970000001", "name": "Faith Nara", "currency": "XTS", "balance": 1200.0, "status": "active"},
+    {"account_id": "260970000002", "name": "Selina Uchiha", "currency": "XTS", "balance": 0.0, "status": "active"},
+    {"account_id": "260970000003", "name": "Peace Yagami", "currency": "XTS", "balance": 10000.0, "status": "active"},
+    {"account_id": "260970000004", "name": "John Aizen", "currency": "XTS", "balance": 0.0, "status": "blocked"}
+  ]
+}

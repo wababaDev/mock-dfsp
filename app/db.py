@@ -1,5 +1,5 @@
 """
-db.py — SQLite setup for the Blue Bank mock.
+db.py — SQLite setup for the mock DFSP.
 
 Tables:
   accounts       — the "real" bank accounts. Has a balance that actually changes.
@@ -15,8 +15,10 @@ be simple enough to read start to finish in one sitting.
 """
 import sqlite3
 from pathlib import Path
+import os
+import json
 
-DB_PATH = Path(__file__).parent.parent / "bluebank.db"
+DB_PATH = Path(__file__).parent.parent / "mockbank.db"
 
 
 def get_connection() -> sqlite3.Connection:
@@ -81,19 +83,15 @@ def init_db():
 
 
 def seed_accounts():
-    """Insert test accounts, only if the table is empty."""
     conn = get_connection()
     existing = conn.execute("SELECT COUNT(*) as c FROM accounts").fetchone()["c"]
     if existing == 0:
+        seed_file = os.environ.get("SEED_FILE", "seeds/bluebank.json")
+        with open(seed_file) as f:
+            seed_data = json.load(f)
         conn.executemany(
             "INSERT INTO accounts (account_id, name, currency, balance, status) VALUES (?, ?, ?, ?, ?)",
-            [
-                ("260970000000", "Mercy Uzumaki", "XTS", 10000.0, "active"),
-                ("260970000001", "Faith Nara", "XTS", 1200.0, "active"),
-                ("260970000002", "Selina Uchiha", "XTS", 0.0, "active"),
-                ("260970000003", "Peace Yagami", "XTS", 10000.0, "active"),
-                ("260970000004", "John Aizen", "XTS", 0.0, "blocked"),
-            ],
+            [(a["account_id"], a["name"], a["currency"], a["balance"], a["status"]) for a in seed_data["accounts"]],
         )
         conn.commit()
     conn.close()
@@ -108,3 +106,11 @@ def record_gl_entry(conn, account_id, entry_type, amount, balance_after, referen
            VALUES (?, ?, ?, ?, ?, ?, ?)""",
         (account_id, entry_type, amount, balance_after, reference_type, reference_id, description),
     )
+
+def load_bank_metadata():
+    """Reads bank_name/fsp_id from the same seed file used by seed_accounts,
+    so identity and seed data can never drift apart from each other."""
+    seed_file = os.environ.get("SEED_FILE", "seeds/bluebank.json")
+    with open(seed_file) as f:
+        seed_data = json.load(f)
+    return {"bank_name": seed_data["bank_name"], "fsp_id": seed_data["fsp_id"]}

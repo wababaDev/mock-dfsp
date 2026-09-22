@@ -1,0 +1,11 @@
+{
+  "bank_name": "greenbank",
+  "fsp_id": "greenbank1",
+  "accounts": [
+    {"account_id": "255700000001", "name": "greenbank1 payee", "currency": "XTS", "balance": 10000.0, "status": "active"},
+    {"account_id": "255700000002", "name": "John Doe", "currency": "XTS", "balance": 5000.0, "status": "active"},
+    {"account_id": "255700000003", "name": "Grace Jaeger", "currency": "XTS", "balance": 1200.0, "status": "active"},
+    {"account_id": "255700000004", "name": "Levi Midoriya", "currency": "XTS", "balance": 0.0, "status": "active"},
+    {"account_id": "255700000005", "name": "Tanya Kamado", "currency": "XTS", "balance": 0.0, "status": "blocked"}
+  ]
+}
